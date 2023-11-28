@@ -40,6 +40,8 @@ Terakhir, pastikan docker image telah berhasil dibuat.
 
 Ini akan menampilkan seluruh docker images pada container tersebut
 
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor1.PNG" alt="Alt text" width="40%">
+
 ## 2. Jalankan Docker Image pada Port 8081
 
 Untuk menjalankan image tersebut pada port 8081, jalankan perintah:
@@ -52,6 +54,9 @@ Keterangan:
 -   **--expose 8081** → **--expose** untuk mengekspos (membuka) port tertentu dari container. Dalam hal ini, container akan mengekspos port **8081** ke host.
 -   **--name "sample_app"** → **–name** digunakan untuk memberi nama pada container yang berjalan. Dalam hal ini, namanya adalah **"sample_app"**.
 -   **sampleapp:1.0.0** → nama dan versi dari image Docker yang akan digunakan untuk membuat container.
+
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor2.PNG" alt="Alt text" width="80%" >
+
 ## 3. IP Container whoami
 
 Untuk mengetahui IP dari container, gunakan perintah **docker inspect <nama_container>**.
@@ -59,12 +64,16 @@ Untuk mengetahui IP dari container, gunakan perintah **docker inspect <nama_cont
     docker inspect whoami
 Outputnya akan berupa JSON yang mencakup berbagai informasi tentang container tersebut, termasuk konfigurasi jaringan dan IP Addrress.
 
-Di bagian **"Networks"**, dapat terlihat IP Address container whoami adalah **172.17.0.2**
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor3-1.PNG" alt="Alt text" width="50%">
+
+Di bagian **"NetworkSettings"** dan **"Networks"**, dapat terlihat IP Address container whoami adalah **172.17.0.2**
 
 Selain perintah di atas, IP Address container juga dapat diketahui dengan perintah berikut:
 
     docker inspect -f '{{ .NetworkSettings.IPAddress }}' whoami
 opsi `-f` atau `--format` digunakan untuk menentukan format output dari perintah docker inspect. Dalam hal ini, kita menggunakan format `{{ .NetworkSettings.IPAddress }}` yang akan secara spesifik mengekstrak informasi mengenai IP Address dari container `whoami`.
+
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor3-2.PNG" alt="Alt text" width="60%">
 
 ## 4. Isi File Tersembunyi dari Docker Container whoami
 Pertama, inspeksi isi container whoami menggunakan perintah: 
@@ -73,16 +82,8 @@ Pertama, inspeksi isi container whoami menggunakan perintah:
 
 Berdasarkan output dari perintah tersebut, dapat terlihat bahwa container whoami menggunakan volume mounting dengan konfigurasi berikut:
 
-    "Mounts": [
-    	{
-    		"Type": "bind",
-    		"Source": "/home/local/.docker",
-    		"Destination": "/tmp/system",
-    		"Mode": "",
-    		"RW": true,
-    		"Propagation": "rprivate"
-    	}
-    ],
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor4-1.PNG" alt="Alt text" width="30%">
+
 Volume mounting dilakukan dari `/home/local/.docker` pada host ke `/tmp/system` di dalam container dengan tipe binding (bind type). Artinya, direktori `/home/local/.docker` pada host akan di-mount (dibagikan/dikaitkan) ke dalam container **whoami** di lokasi `/tmp/system`.
 
 Untuk mengetahui isi dari file yang tersembunyi dari container tersebut, cek dulu seluruh file yang terdapat dalam direktori `/tmp/system`, termasuk file tersembunyi.
@@ -94,6 +95,8 @@ outputnya menunjukkan ada file bernama **whoami** dalam direktori tersebut. Sela
 Hasilnya adalah: 
 `Oofooni1eeb9aengol3feekiph6fieve`
 
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor4-2.PNG" alt="Alt text" width="50%">
+
 ## 5. Image yang digunakan pada Container whoami
 
 Untuk mengetahui docker image yang digunakan pada container whoami, gunakan perintah:
@@ -101,12 +104,15 @@ Untuk mengetahui docker image yang digunakan pada container whoami, gunakan peri
     docker ps
 Ini akan memberikan informasi seperti container id, image, command, status, port yang di-mapping, dan sebagainya.
 
+<img src="https://github.com/dhilasdrh/btj-academy/blob/main/images/nomor5.PNG" alt="Alt text" width="80%">
+
 Berdasarkan output perintah tersebut, dapat terlihat nama Image dari container whoami adalah:
+
 `secret:aequaix9De6dii1ay4HeeWai2obie6Ei`
 
 Artinya, container **whoami** menggunakan Docker image dengan nama `secret` dan tag `aequaix9De6dii1ay4HeeWai2obie6Ei`.
 
-Selain perintah di atas, nama Image yang digunakan pada container juga dapat diketahui dengan perintah berikut.
+Selain `docker ps`, nama Image yang digunakan pada container juga dapat diketahui secara spesifik dengan perintah berikut.
 
     docker inspect -f '{{ .Config.Image }}' whoami
 opsi `-f` digunakan untuk memformat output sesuai dengan format yang ditentukan oleh template Go. Dalam hal ini, template Go yang digunakan adalah `{{ .Config.Image }}`, berarti secara spesifik ingin mengekstrak informasi tentang nama Docker image dari konfigurasi container dengan nama `whoami`.
